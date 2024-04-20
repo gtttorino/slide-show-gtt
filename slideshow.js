@@ -70,7 +70,7 @@ if (typeof slideshow === "object") {
       vid.addEventListener(
         "error",
         function (event) {
-          wrapper.innerText = "Error loading image " + url;
+          wrapper.innerText = "Error loading video " + url;
           loaded();
         },
         true
