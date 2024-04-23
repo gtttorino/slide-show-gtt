@@ -50,7 +50,6 @@ if (typeof slideshow === "object") {
         autoplay.classList.remove("hidden");
       }
     }
-
     localStorage.setItem(hash, counter);
     show();
   }
@@ -71,7 +70,7 @@ if (typeof slideshow === "object") {
         "error",
         function (event) {
           wrapper.innerText = "Error loading video " + url;
-          loaded();
+          loaded(true);
         },
         true
       );
@@ -102,23 +101,26 @@ if (typeof slideshow === "object") {
       };
       i.onerror = function () {
         wrapper.innerText = "Error loading image " + url;
-        loaded();
+        loaded(true);
       };
     }
   }
-  function loaded() {
+  function loaded(error = false) {
+    let transition = speed || 3000;
     wrapper.dataset.loaded = "true";
     let curr = document.getElementById(slideshow.media[counter]);
-    if (curr != null) {
-      speed = curr.duration * 1000;
+    if (error) {
+      transition = 500;
     } else {
-      speed = slideshow.speed || 3000;
+      if (curr != null) {
+        transition = curr.duration * 1000;
+      }
     }
     if (autoincrease && !last) {
       timeout = window.setTimeout(function () {
         counter++;
         validatecounter();
-      }, speed);
+      }, transition);
     }
   }
   function nextslide() {
